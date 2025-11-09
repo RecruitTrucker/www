@@ -7,12 +7,12 @@
     <meta name="description" content="The premier platform connecting truck drivers with trucking companies. Find CDL jobs, get training resources, and build your professional trucking career.">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SW4C4CD2B"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-2SW4C4CD2B'); // Replace with your actual GA4 ID
+        gtag('config', 'G-XXXXXXXXXX'); // Replace with your actual GA4 ID
     </script>
     
     <style>
@@ -493,7 +493,7 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="/" class="logo">Recruit<span>Trucker</span></a>
+            <a href="#" class="logo">Recruit<span>Trucker</span></a>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
                 <li><a href="#for-drivers">For Drivers</a></li>
@@ -696,16 +696,21 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Initialize Supabase
-        const SUPABASE_URL = 'https://xhswiizneqphltobsxkw.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc3dpaXpuZXFwaGx0b2JzeGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzI5NTEsImV4cCI6MjA3Mjc0ODk1MX0.HiZZ1RTSqOf0dbc9xBbmWGaaEKaI1bM3GtCxOcdMABI';
-
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your Supabase anon key
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            }
+        });
         
         // Handle form submission
         document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('emailInput').value;
+            const email = document.getElementById('emailInput').value.toLowerCase().trim();
             const messageDiv = document.getElementById('formMessage');
             const submitButton = this.querySelector('button');
             
@@ -722,23 +727,35 @@
                     'value': email
                 });
                 
-                // Insert into Supabase
+                // Insert into Supabase - simplified insert without created_at (let DB handle it)
                 const { data, error } = await supabase
                     .from('recruittrucker_waitlist')
                     .insert([
                         { 
                             email: email,
-                            created_at: new Date().toISOString(),
                             source: 'landing_page'
                         }
                     ])
                     .select();
                 
                 if (error) {
+                    console.error('Supabase error:', error);
+                    
                     // Check if it's a duplicate entry
-                    if (error.code === '23505' || error.message.includes('duplicate')) {
+                    if (error.code === '23505' || error.message.includes('duplicate') || error.message.includes('unique')) {
                         messageDiv.className = 'form-message success';
                         messageDiv.textContent = "You're already on our waitlist! We'll notify you when we launch.";
+                        document.getElementById('emailInput').value = '';
+                    } else if (error.code === '42501' || error.message.includes('row-level security')) {
+                        // RLS policy issue - show user-friendly message
+                        messageDiv.className = 'form-message error';
+                        messageDiv.textContent = 'Database configuration error. Please contact support at support@recruittrucker.com';
+                        
+                        // Track RLS error for debugging
+                        gtag('event', 'exception', {
+                            'description': 'RLS Policy Error: ' + error.message,
+                            'fatal': false
+                        });
                     } else {
                         throw error;
                     }
@@ -749,7 +766,7 @@
                     
                     // Track successful signup
                     gtag('event', 'conversion', {
-                        'send_to': 'G-2SW4C4CD2B/waitlist_signup',
+                        'send_to': 'G-XXXXXXXXXX/waitlist_signup',
                         'event_category': 'Conversion',
                         'event_label': 'Waitlist Signup Success'
                     });
@@ -760,12 +777,12 @@
             } catch (error) {
                 console.error('Error:', error);
                 messageDiv.className = 'form-message error';
-                messageDiv.textContent = 'Something went wrong. Please try again.';
+                messageDiv.textContent = 'Something went wrong. Please try again or contact support.';
                 messageDiv.style.display = 'block';
                 
-                // Track error
+                // Track error with full details
                 gtag('event', 'exception', {
-                    'description': 'Waitlist signup error: ' + error.message,
+                    'description': 'Waitlist signup error: ' + (error.message || error.code || 'Unknown error'),
                     'fatal': false
                 });
             } finally {

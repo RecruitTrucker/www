@@ -7,12 +7,12 @@
     <meta name="description" content="The premier platform connecting truck drivers with trucking companies. Find CDL jobs, get training resources, and build your professional trucking career.">
     
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SW4C4CD2B"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX'); // Replace with your actual GA4 ID
+        gtag('config', 'G-2SW4C4CD2B'); // Replace with your actual GA4 ID
     </script>
     
     <style>
@@ -109,7 +109,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: url('HERO_IMAGE_PLACEHOLDER') center/cover;
+            /* background: url('HERO_IMAGE_PLACEHOLDER') center/cover; */
             opacity: 0.15;
         }
         
@@ -696,8 +696,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Initialize Supabase
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // Replace with your Supabase anon key
+        const SUPABASE_URL = 'https://xhswiizneqphltobsxkw.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc3dpaXpuZXFwaGx0b2JzeGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzI5NTEsImV4cCI6MjA3Mjc0ODk1MX0.HiZZ1RTSqOf0dbc9xBbmWGaaEKaI1bM3GtCxOcdMABI';
         
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: {
@@ -766,7 +766,7 @@
                     
                     // Track successful signup
                     gtag('event', 'conversion', {
-                        'send_to': 'G-XXXXXXXXXX/waitlist_signup',
+                        'send_to': 'G-2SW4C4CD2B/waitlist_signup',
                         'event_category': 'Conversion',
                         'event_label': 'Waitlist Signup Success'
                     });

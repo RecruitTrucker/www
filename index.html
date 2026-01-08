@@ -701,10 +701,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         // Initialize Supabase
-        const SUPABASE_URL = 'https://xhswiizneqphltobsxkw.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc3dpaXpuZXFwaGx0b2JzeGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzI5NTEsImV4cCI6MjA3Mjc0ODk1MX0.HiZZ1RTSqOf0dbc9xBbmWGaaEKaI1bM3GtCxOcdMABI';
+        var SUPABASE_URL = 'https://xhswiizneqphltobsxkw.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhoc3dpaXpuZXFwaGx0b2JzeGt3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcxNzI5NTEsImV4cCI6MjA3Mjc0ODk1MX0.HiZZ1RTSqOf0dbc9xBbmWGaaEKaI1bM3GtCxOcdMABI';
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
             auth: {
                 autoRefreshToken: false,
                 persistSession: false
@@ -715,9 +715,9 @@
         document.getElementById('signupForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('emailInput').value.toLowerCase().trim();
-            const messageDiv = document.getElementById('formMessage');
-            const submitButton = this.querySelector('button');
+            var email = document.getElementById('emailInput').value.toLowerCase().trim();
+            var messageDiv = document.getElementById('formMessage');
+            var submitButton = this.querySelector('button');
             
             // Disable button and show loading
             submitButton.disabled = true;
@@ -733,7 +733,7 @@
                 });
                 
                 // Insert into Supabase - simplified insert without created_at (let DB handle it)
-                const { data, error } = await supabase
+                var { data, error } = await db
                     .from('recruittrucker_waitlist')
                     .insert([
                         { 
@@ -805,7 +805,7 @@
         // Track scroll depth
         let scrollTracked = {25: false, 50: false, 75: false, 100: false};
         window.addEventListener('scroll', function() {
-            const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            var scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
             
             Object.keys(scrollTracked).forEach(depth => {
                 if (scrollPercent >= depth && !scrollTracked[depth]) {

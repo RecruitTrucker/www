@@ -15,6 +15,51 @@
         gtag('config', 'G-2SW4C4CD2B'); // Replace with your actual GA4 ID
     </script>
 
+    <!-- Theme (light / dark / system) - runs before paint to avoid flash -->
+    <script>
+        (function () {
+            var KEY = 'theme';
+            var mq = window.matchMedia('(prefers-color-scheme: light)');
+            function getPref() {
+                try {
+                    var v = localStorage.getItem(KEY);
+                    return (v === 'light' || v === 'dark' || v === 'system') ? v : 'system';
+                } catch (e) { return 'system'; }
+            }
+            function resolve(p) { return p === 'system' ? (mq.matches ? 'light' : 'dark') : p; }
+            function apply() {
+                document.documentElement.setAttribute('data-theme', resolve(getPref()));
+                var btns = document.querySelectorAll('[data-theme-choice]');
+                for (var i = 0; i < btns.length; i++) {
+                    var on = btns[i].getAttribute('data-theme-choice') === getPref();
+                    btns[i].classList.toggle('active', on);
+                    btns[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+                }
+            }
+            apply();
+            if (mq.addEventListener) { mq.addEventListener('change', apply); }
+            else if (mq.addListener) { mq.addListener(apply); }
+            // Sync with other tabs and the mobile WebView wrapper
+            window.addEventListener('storage', function (e) { if (!e || e.key === null || e.key === KEY) apply(); });
+            window.addEventListener('themeChanged', apply);
+            document.addEventListener('DOMContentLoaded', function () {
+                apply();
+                document.addEventListener('click', function (e) {
+                    var t = e.target;
+                    while (t && t !== document && !t.getAttribute('data-theme-choice')) { t = t.parentNode; }
+                    if (!t || t === document || !t.getAttribute) return;
+                    var choice = t.getAttribute('data-theme-choice');
+                    if (!choice) return;
+                    try { localStorage.setItem(KEY, choice); } catch (err) {}
+                    apply();
+                    if (window.gtag) {
+                        gtag('event', 'theme_change', { 'event_category': 'UI', 'event_label': choice });
+                    }
+                });
+            });
+        })();
+    </script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -30,10 +75,50 @@
             --on-amber: #2A1D03;
             --green: #37C289;
             --green-chip: #10281E;
-            --blue: #86A6D6;
-            --red: #E6685F;
             --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+            /* Theme-dependent extras */
+            --amber-ink: #F6A821;
+            --blue: #86A6D6;
+            --red: #E6685F;
+            --panel: #10161e;
+            --footer-bg: #0A0F15;
+            --header-bg: rgba(13, 19, 26, 0.92);
+            --chip-review-bg: #182432;
+            --chip-draft-bg: #212c37;
+            --chip-expired-bg: #2e1c1a;
+            --dash: #3a4653;
+            --hover-border: #34424f;
+            --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.25);
+            --shadow-md: 0 18px 44px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.55);
+            color-scheme: dark;
+        }
+
+        :root[data-theme="light"] {
+            --bg: #F2F5F8;
+            --card: #FFFFFF;
+            --inset: #E9EEF3;
+            --border: #D7DFE7;
+            --text: #16202A;
+            --muted: #5B6874;
+            --amber-ink: #A96C00;
+            --green: #1E8A5E;
+            --green-chip: #DFF4EA;
+            --blue: #3D6CB0;
+            --red: #C2453C;
+            --panel: #E9EEF3;
+            --footer-bg: #E4EAF0;
+            --header-bg: rgba(242, 245, 248, 0.92);
+            --chip-review-bg: #E2EBF7;
+            --chip-draft-bg: #E6EBF0;
+            --chip-expired-bg: #FBE7E5;
+            --dash: #B6C2CD;
+            --hover-border: #C2CDD7;
+            --shadow-sm: 0 8px 24px rgba(22, 32, 42, 0.08);
+            --shadow-md: 0 18px 44px rgba(22, 32, 42, 0.12);
+            --shadow-lg: 0 24px 60px rgba(22, 32, 42, 0.18);
+            color-scheme: light;
         }
 
         html { scroll-behavior: smooth; }
@@ -59,14 +144,14 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.14em;
-            color: var(--amber);
+            color: var(--amber-ink);
             display: block;
             margin-bottom: 0.75rem;
         }
 
         /* ============ Header ============ */
         header {
-            background: rgba(13, 19, 26, 0.92);
+            background: var(--header-bg);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border);
             position: fixed;
@@ -169,7 +254,7 @@
             overflow: hidden;
             background:
                 radial-gradient(ellipse 900px 420px at 78% 18%, rgba(246, 168, 33, 0.07), transparent 60%),
-                linear-gradient(180deg, #10161e 0%, var(--bg) 100%);
+                linear-gradient(180deg, var(--panel) 0%, var(--bg) 100%);
         }
 
         .hero-grid {
@@ -202,7 +287,7 @@
             color: #16202A;
             border-radius: 10px;
             padding: 1.4rem 1.5rem;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+            box-shadow: var(--shadow-lg);
             max-width: 400px;
             justify-self: end;
             width: 100%;
@@ -349,11 +434,11 @@
             border: 1px solid var(--border);
             padding: 1.8rem;
             border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            box-shadow: var(--shadow-sm);
             transition: transform 0.25s, border-color 0.25s;
         }
 
-        .feature-card:hover { transform: translateY(-4px); border-color: #34424f; }
+        .feature-card:hover { transform: translateY(-4px); border-color: var(--hover-border); }
 
         .feature-icon {
             width: 44px;
@@ -399,7 +484,7 @@
             font-family: var(--mono);
         }
 
-        .bg-panel { background: #10161e; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .bg-panel { background: var(--panel); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 
         /* Product-style preview panels (replace stock photos) */
         .preview-panel {
@@ -407,7 +492,7 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 1.3rem;
-            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.4);
+            box-shadow: var(--shadow-md);
         }
 
         .pp-title {
@@ -447,9 +532,9 @@
         }
 
         .chip-verified { color: var(--green); background: var(--green-chip); }
-        .chip-review { color: var(--blue); background: #182432; }
-        .chip-draft { color: var(--muted); background: #212c37; }
-        .chip-expired { color: var(--red); background: #2e1c1a; }
+        .chip-review { color: var(--blue); background: var(--chip-review-bg); }
+        .chip-draft { color: var(--muted); background: var(--chip-draft-bg); }
+        .chip-expired { color: var(--red); background: var(--chip-expired-bg); }
 
         /* Route line motif */
         .route-line {
@@ -465,7 +550,7 @@
 
         .route-dash {
             flex: 1;
-            border-top: 2px dashed #3a4653;
+            border-top: 2px dashed var(--dash);
             position: relative;
         }
 
@@ -504,7 +589,7 @@
             height: 54px;
             background: var(--inset);
             border: 1px solid var(--border);
-            color: var(--amber);
+            color: var(--amber-ink);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -523,7 +608,7 @@
             padding: 90px 0;
             background:
                 radial-gradient(ellipse 700px 320px at 50% 0%, rgba(246, 168, 33, 0.06), transparent 65%),
-                #10161e;
+                var(--panel);
             border-top: 1px solid var(--border);
         }
 
@@ -586,7 +671,7 @@
         }
 
         .form-message.error {
-            background: #2e1c1a;
+            background: var(--chip-expired-bg);
             border: 1px solid rgba(230, 104, 95, 0.4);
             color: var(--red);
         }
@@ -600,7 +685,7 @@
         }
 
         footer {
-            background: #0A0F15;
+            background: var(--footer-bg);
             color: var(--text);
             padding: 3rem 0 1.5rem;
         }
@@ -620,7 +705,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: var(--amber);
+            color: var(--amber-ink);
             margin-bottom: 1rem;
         }
 
@@ -663,6 +748,49 @@
 
         .footer-bottom a:hover { color: var(--text); }
 
+
+        /* Theme switcher */
+        .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+
+        .theme-switch {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            background: var(--inset);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .theme-switch button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 26px;
+            border: none;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--muted);
+            cursor: pointer;
+            transition: color 0.2s, background 0.2s;
+        }
+
+        .theme-switch button:hover { color: var(--text); }
+
+        .theme-switch button.active {
+            background: var(--card);
+            color: var(--text);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .theme-switch button:focus-visible {
+            outline: 2px solid var(--amber);
+            outline-offset: 1px;
+        }
+
+        .theme-switch svg { width: 15px; height: 15px; display: block; }
+
         /* ============ Responsive ============ */
         @media (max-width: 960px) {
             .hero-grid { grid-template-columns: 1fr; }
@@ -688,12 +816,25 @@
                 <img src="logo.png" alt="Recruit Trucker logo">
                 <span>RecruitTrucker</span>
             </a>
-            <ul class="nav-links">
-                <li><a href="#features">Features</a></li>
-                <li><a href="#for-drivers">For Drivers</a></li>
-                <li><a href="#for-companies">For Companies</a></li>
-                <li><a href="#signup" class="nav-cta">Get Notified</a></li>
-            </ul>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#for-drivers">For Drivers</a></li>
+                    <li><a href="#for-companies">For Companies</a></li>
+                    <li><a href="#signup" class="nav-cta">Get Notified</a></li>
+                </ul>
+                <div class="theme-switch" role="group" aria-label="Color theme">
+                    <button type="button" data-theme-choice="light" aria-label="Light theme" title="Light theme" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    </button>
+                    <button type="button" data-theme-choice="system" aria-label="System theme" title="System theme" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </button>
+                    <button type="button" data-theme-choice="dark" aria-label="Dark theme" title="Dark theme" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </button>
+                </div>
+            </div>
         </nav>
     </header>
 

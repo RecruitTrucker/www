@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Against Human Trafficking - Recruit Trucker</title>
+    <meta name="description" content="Recruit Trucker has zero tolerance for human trafficking and child trafficking. Our commitment, the safeguards we build into a verified trucking marketplace, and how to recognize and report trafficking.">
+    <meta name="robots" content="index, follow">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2SW4C4CD2B"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-2SW4C4CD2B');
+    </script>
+
+    <!-- Theme (light / dark / system) - runs before paint to avoid flash -->
+    <script>
+        (function () {
+            var KEY = 'theme';
+            var mq = window.matchMedia('(prefers-color-scheme: light)');
+            function getPref() {
+                try { var v = localStorage.getItem(KEY); return (v === 'light' || v === 'dark' || v === 'system') ? v : 'system'; }
+                catch (e) { return 'system'; }
+            }
+            function resolve(p) { return p === 'system' ? (mq.matches ? 'light' : 'dark') : p; }
+            function apply() {
+                document.documentElement.setAttribute('data-theme', resolve(getPref()));
+                var btns = document.querySelectorAll('[data-theme-choice]');
+                for (var i = 0; i < btns.length; i++) {
+                    var on = btns[i].getAttribute('data-theme-choice') === getPref();
+                    btns[i].classList.toggle('active', on);
+                    btns[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+                }
+            }
+            apply();
+            if (mq.addEventListener) { mq.addEventListener('change', apply); } else if (mq.addListener) { mq.addListener(apply); }
+            window.addEventListener('storage', function (e) { if (!e || e.key === null || e.key === KEY) apply(); });
+            window.addEventListener('themeChanged', apply);
+            document.addEventListener('DOMContentLoaded', function () {
+                apply();
+                document.addEventListener('click', function (e) {
+                    var t = e.target;
+                    while (t && t !== document && !t.getAttribute('data-theme-choice')) { t = t.parentNode; }
+                    if (!t || t === document || !t.getAttribute) return;
+                    var choice = t.getAttribute('data-theme-choice'); if (!choice) return;
+                    try { localStorage.setItem(KEY, choice); } catch (err) {}
+                    apply();
+                    if (window.gtag) { gtag('event', 'theme_change', { 'event_category': 'UI', 'event_label': choice }); }
+                });
+            });
+        })();
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0D131A; --card: #151D26; --inset: #1B2631; --border: #253039;
+            --text: #E9EFF4; --muted: #93A0AD; --amber: #F6A821; --on-amber: #2A1D03;
+            --green: #37C289; --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, Consolas, monospace;
+            --amber-ink: #F6A821; --red: #E6685F; --footer-bg: #0A0F15; --header-bg: rgba(13, 19, 26, 0.92);
+            color-scheme: dark;
+        }
+        :root[data-theme="light"] {
+            --bg: #F2F5F8; --card: #FFFFFF; --inset: #E9EEF3; --border: #D7DFE7;
+            --text: #16202A; --muted: #5B6874; --amber-ink: #A96C00; --green: #1E8A5E; --red: #C2453C;
+            --footer-bg: #E4EAF0; --header-bg: rgba(242, 245, 248, 0.92); color-scheme: light;
+        }
+        body { font-family: var(--sans); line-height: 1.7; color: var(--text); background: var(--bg); }
+        .container { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+        header { background: var(--header-bg); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 0.85rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .logo { display: flex; align-items: center; gap: 0.7rem; text-decoration: none; color: var(--text); }
+        .logo img { width: 40px; height: 40px; border-radius: 9px; display: block; }
+        .logo span { font-size: 1.35rem; font-weight: 900; letter-spacing: -0.02em; }
+        .nav-back { color: var(--muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .nav-back:hover { color: var(--text); }
+        .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+        .theme-switch { display: flex; align-items: center; gap: 2px; background: var(--inset); border: 1px solid var(--border); border-radius: 8px; padding: 3px; }
+        .theme-switch button { display: flex; align-items: center; justify-content: center; width: 30px; height: 26px; border: none; border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; transition: color .2s, background .2s; }
+        .theme-switch button:hover { color: var(--text); }
+        .theme-switch button.active { background: var(--card); color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.25); }
+        .theme-switch svg { width: 15px; height: 15px; display: block; }
+        main { margin-top: 66px; padding: 70px 0 90px; }
+        .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--amber-ink); display: block; margin-bottom: 0.75rem; }
+        h1 { font-size: 2.7rem; font-weight: 900; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 1rem; }
+        .lede { font-size: 1.2rem; color: var(--muted); margin-bottom: 1.5rem; max-width: 60ch; }
+        h2 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.01em; margin: 2.8rem 0 1rem; }
+        p { color: var(--muted); margin-bottom: 1rem; }
+        ul { margin: 0 0 1rem 1.4rem; } li { color: var(--muted); margin-bottom: 0.55rem; }
+        strong { color: var(--text); }
+        a { color: var(--amber-ink); text-decoration: none; } a:hover { text-decoration: underline; }
+        .pledge { background: linear-gradient(180deg, rgba(230,104,95,0.10), transparent), var(--card); border: 1px solid var(--border); border-left: 4px solid var(--red); border-radius: 12px; padding: 1.6rem 1.8rem; margin: 1.8rem 0; }
+        .pledge p { color: var(--text); font-size: 1.05rem; margin: 0; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+        .cardlet { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.3rem; }
+        .cardlet h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+        .cardlet p { font-size: 0.95rem; margin: 0; }
+        .hotline { background: var(--inset); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem 1.8rem; margin: 1.4rem 0; }
+        .hotline .num { font-family: var(--mono); font-size: 1.6rem; font-weight: 800; color: var(--text); display: block; margin: 0.3rem 0; letter-spacing: -0.01em; }
+        .hotline .num a { color: var(--text); }
+        .note { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+        .lane-divider { border: none; border-top: 3px dashed var(--amber); opacity: 0.75; margin: 0; }
+        footer { background: var(--footer-bg); padding: 2rem 0; text-align: center; }
+        footer p { color: var(--muted); font-family: var(--mono); font-size: 12px; margin: 0; }
+        footer a { color: var(--muted); } footer a:hover { color: var(--text); }
+        @media (max-width: 768px) { h1 { font-size: 2rem; } .lede { font-size: 1.05rem; } .nav-back { display: none; } }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo"><img src="logo.png" alt="Recruit Trucker logo"><span>RecruitTrucker</span></a>
+            <div class="nav-right">
+                <a href="index.html" class="nav-back">← Back to Home</a>
+                <div class="theme-switch" role="group" aria-label="Color theme">
+                    <button type="button" data-theme-choice="light" aria-label="Light theme" title="Light theme" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
+                    <button type="button" data-theme-choice="system" aria-label="System theme" title="System theme" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></button>
+                    <button type="button" data-theme-choice="dark" aria-label="Dark theme" title="Dark theme" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <span class="eyebrow">Our Commitment</span>
+            <h1>We stand against human trafficking and child trafficking.</h1>
+            <p class="lede">The trucking industry sits at a unique vantage point on America's highways. Recruit Trucker is built to keep the people who move freight safe — and to give them the tools to spot and report exploitation.</p>
+
+            <div class="pledge">
+                <p><strong>Zero tolerance.</strong> Recruit Trucker has no place for human trafficking, child trafficking, forced labor, or the exploitation of any person. Any account used to facilitate, advertise, or conceal these crimes is removed, and credible information is referred to the appropriate authorities.</p>
+            </div>
+
+            <h2>Why this matters in trucking</h2>
+            <p>Traffickers move victims along the same highways, truck stops, and rest areas that professional drivers use every day. That means drivers and carriers are often the people most likely to witness — and interrupt — trafficking in progress. We take that responsibility seriously, and we want every member of our community to know the signs and know how to act.</p>
+
+            <h2>How our platform is designed to help</h2>
+            <p>These are safeguards we actually build into the marketplace today — not promises for later:</p>
+            <div class="grid">
+                <div class="cardlet"><h3>Verified identities</h3><p>Identity verification (via Stripe Identity) and manual review of professional credentials make it harder for bad actors to operate anonymously behind fake profiles.</p></div>
+                <div class="cardlet"><h3>Human moderation</h3><p>Our staff can review, moderate, suspend, and remove accounts and listings. Postings and messages that violate our Terms are taken down.</p></div>
+                <div class="cardlet"><h3>Report tools</h3><p>Every member can report a profile, listing, or message to our team through the in-app support system, and we follow up and track it to resolution.</p></div>
+                <div class="cardlet"><h3>Audit &amp; accountability</h3><p>Sensitive actions and staff access are logged, so we can cooperate with a lawful investigation when one is required.</p></div>
+            </div>
+            <p class="note">Note: our safeguards deter and disrupt abuse; no platform can guarantee prevention. We continually improve these controls — see our roadmap for planned trust &amp; safety enhancements.</p>
+
+            <h2>Know the signs</h2>
+            <p>Trafficking can be hard to see. Some indicators the anti-trafficking community asks drivers to watch for:</p>
+            <ul>
+                <li>A person who appears to be under the control of someone else, or who isn't free to speak for themselves;</li>
+                <li>Someone who seems disoriented, fearful, or unable to say where they are or where they're going;</li>
+                <li>Minors traveling with unrelated adults under unclear circumstances, especially at truck stops or rest areas;</li>
+                <li>Vehicles dropping off or picking up people at odd hours around lots and rest areas;</li>
+                <li>Signs of physical abuse, malnourishment, or a lack of personal freedom or identification.</li>
+            </ul>
+            <p>If a child is in immediate danger, <strong>call 911.</strong> Do not intervene physically or try to investigate yourself — your safety and the victim's safety come first.</p>
+
+            <h2>How to report</h2>
+            <p>If you see something, say something. Reporting is confidential and can save a life.</p>
+            <div class="hotline">
+                <span class="eyebrow">National Human Trafficking Hotline (U.S.)</span>
+                <span class="num"><a href="tel:18883737888">1-888-373-7888</a></span>
+                <p style="margin:0">Text <strong>233733</strong> (BeFree) · Available 24/7, confidential, in many languages.</p>
+            </div>
+            <div class="hotline">
+                <span class="eyebrow">Missing or exploited children</span>
+                <span class="num"><a href="tel:18008435678">1-800-843-5678</a></span>
+                <p style="margin:0">National Center for Missing &amp; Exploited Children (NCMEC) CyberTipline: <a href="https://report.cybertip.org" target="_blank" rel="noopener">report.cybertip.org</a></p>
+            </div>
+            <p><strong>Emergencies:</strong> if someone is in immediate danger, call <strong>911</strong>. To report abuse of Recruit Trucker itself, contact us at <a href="mailto:support@recruittrucker.com">support@recruittrucker.com</a> or use the in-app report tools — and please contact law enforcement first if a person is at risk.</p>
+
+            <h2>Learn more</h2>
+            <p>We encourage every driver, carrier, and broker in our community to learn the industry's anti-trafficking training and resources:</p>
+            <ul>
+                <li><a href="https://truckersagainsttrafficking.org" target="_blank" rel="noopener">Truckers Against Trafficking</a> — free training built specifically for the trucking industry.</li>
+                <li><a href="https://humantraffickinghotline.org" target="_blank" rel="noopener">National Human Trafficking Hotline</a> — recognize the signs and get help.</li>
+                <li><a href="https://www.missingkids.org" target="_blank" rel="noopener">National Center for Missing &amp; Exploited Children</a>.</li>
+            </ul>
+            <p class="note">Recruit Trucker points to these organizations as public resources; a listing here does not imply a formal partnership or endorsement.</p>
+        </div>
+    </main>
+
+    <hr class="lane-divider">
+    <footer>
+        <p>&copy; 2026 UrdaSoft, LLC dba Recruit Trucker. All rights reserved. &nbsp;·&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html">Terms of Service</a> &nbsp;·&nbsp; <a href="against-trafficking.html">Against Trafficking</a></p>
+    </footer>
+
+    <script>
+        gtag('event', 'page_view', { 'page_title': 'Against Human Trafficking', 'page_location': window.location.href });
+    </script>
+</body>
+</html>
